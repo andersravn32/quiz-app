@@ -8,7 +8,7 @@ router.get("/", require("../controllers/category.get"));
 router.post(
   "/",
   check.role(1),
-  body("title").isLength({ min: 4, max: 20 }),
+  body("title").isLength({ min: 4, max: 50 }),
   body("description").isLength({ min: 4, max: 200 }),
   body("public").isBoolean(),
   require("../controllers/category.post")
@@ -17,7 +17,7 @@ router.post(
 router.put(
   "/:id",
   check.role(1),
-  body("title").isLength({ min: 4, max: 20 }),
+  body("title").isLength({ min: 4, max: 50 }),
   body("description").isLength({ min: 4, max: 200 }),
   body("public").isBoolean(),
   require("../controllers/category.put")
