@@ -14,6 +14,7 @@ router.post(
 router.post(
   "/signup",
   body("email").isEmail(),
+  body("identifier").isLength({ min: 5, max: 50 }),
   body("password").isLength({ min: 5 }),
   require("../controllers/signup")
 );
