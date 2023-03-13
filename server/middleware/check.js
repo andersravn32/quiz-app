@@ -30,6 +30,17 @@ module.exports = {
       });
     }
   },
+  role: (role) => {
+    return (req, res, next) => {
+      if (!(req.user.role >= role)) {
+        return res.json({
+          error: "Insufficient permissions",
+        });
+      }
+
+      return next();
+    };
+  },
   api: async (req, res, next) => {
     // Get token from request headers or request query
     const token = req.headers.authorization || req.query.token;
