@@ -16,6 +16,7 @@ const USER = {
   uuid: null,
   firstName: null,
   lastName: null,
+  identifier: null,
   email: null,
   password: null,
   role: 0,
@@ -47,13 +48,13 @@ module.exports = async (req, res) => {
     const db = database.get();
 
     // Check database for duplicate entries
-    const duplicates = await db
-      .collection("users")
-      .findOne({ email: user.email });
+    const duplicates = await db.collection("users").findOne({
+      $or: [{ email: user.email }, { identifier: user.identifier }],
+    });
 
     // Return error if duplicate was found
     if (duplicates) {
-      return res.json({ error: "E-mail is already in use" });
+      return res.json({ error: "E-mail or identifier is already in use" });
     }
 
     // Create hashed password

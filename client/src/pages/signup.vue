@@ -12,6 +12,7 @@ const loading = ref(false);
 const user = ref({
   firstName: null,
   lastName: null,
+  identifier: null,
   email: null,
   password: null,
 });
@@ -49,7 +50,7 @@ const signup = async () => {
 <template>
   <section id="page-signup" @submit.prevent="signup">
     <form class="container">
-        <h1>Opret ny konto</h1>
+      <h1>Opret ny konto</h1>
       <div class="grid">
         <label for="firstname">
           Fornavn
@@ -71,6 +72,10 @@ const signup = async () => {
           />
         </label>
       </div>
+      <label for="identifier">
+        Brugernavn
+        <input v-model="user.identifier" type="text" placeholder="Brugernavn" required />
+      </label>
       <label for="email">
         Email
         <input v-model="user.email" type="email" placeholder="Email" required />
@@ -87,7 +92,9 @@ const signup = async () => {
       <button :aria-busy="loading">
         {{ loading ? "Vent venligst" : "Opret konto" }}
       </button>
-      <p>Har du allerede en konto? <router-link to="/signin">Log på</router-link></p>
+      <p>
+        Har du allerede en konto? <router-link to="/signin">Log på</router-link>
+      </p>
     </form>
   </section>
 </template>
