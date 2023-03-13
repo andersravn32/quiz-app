@@ -4,21 +4,31 @@ import { ref } from "vue";
 const emit = defineEmits(["close"]);
 
 const category = ref({
-  title: null,
-  description: null,
+  title: "",
+  description: "",
   public: true,
 });
 
 const loading = ref(false);
 
 const create = async () => {
-    // Update loading state
-    loading.value = true;
+  // Update loading state
+  loading.value = true;
 
-    
+  // Request creation of new category from server
+  const request = await fetch("http://127.0.0.1:3000/category", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(category.value),
+  }).then((res) => res.json());
 
-    // Update loading state
-    loading.value = false;
+  // Update loading state
+  loading.value = false;
+
+  return emit("close");
 };
 </script>
 
@@ -35,6 +45,9 @@ const create = async () => {
   <form id="form-create-category" @submit.prevent="create">
     <label for="email">
       Titel på kategori
+      <span v-if="category.title.length"
+        >({{ 50 - category.title.length }} tegn tilbage.)</span
+      >
       <input
         v-model="category.title"
         type="text"
@@ -42,7 +55,12 @@ const create = async () => {
         required
       />
     </label>
-    <label for="email">Kategori beskrivelse</label>
+    <label for="email"
+      >Kategori beskrivelse
+      <span v-if="category.description.length"
+        >({{ 200 - category.description.length }} tegn tilbage.)</span
+      ></label
+    >
     <textarea
       v-model="category.description"
       type="email"
