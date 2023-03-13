@@ -38,8 +38,14 @@ const init = async () => {
   );
   app.use(express.json());
 
-  // Route traffic to router
-  app.use(require("./routes"));
+  // Route main traffic to router
+  app.use("/", require("./routes"));
+
+  // Route api calls to API router
+  app.use("/api", require("./routes/api"));
+
+  // Catchall route
+  app.use("*", require("./routes"));
 
   server.listen(process.env.PORT, () => {
     console.log("Server is ready for requests");
