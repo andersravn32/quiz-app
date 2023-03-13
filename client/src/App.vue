@@ -1,6 +1,7 @@
 <script setup>
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
+import Modal from "./components/Modal.vue";
 import useAccount from "./composables/useAccount";
 import { onMounted, ref } from "vue";
 
@@ -47,6 +48,7 @@ onMounted(async () => {
       </router-view>
     </div>
     <Footer v-if="ready" />
+    <Modal v-if="ready" />
   </div>
 </template>
 
