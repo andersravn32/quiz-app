@@ -5,15 +5,31 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: import("../pages/index.vue"),
+      component: () => import("../pages/index.vue"),
     },
     {
       path: "/signin",
-      component: import("../pages/signin.vue"),
+      component: () => import("../pages/signin.vue"),
     },
     {
       path: "/signup",
-      component: import("../pages/signup.vue"),
+      component: () => import("../pages/signup.vue"),
+    },
+    {
+        path: "/dashboard",
+        component: () => import("../pages/dashboard.vue"),
+    },
+    {
+        path: "/leaderboard",
+        component: () => import("../pages/leaderboard.vue"),
+    },
+    {
+        path: "/profile",
+        component: () => import("../pages/profile.vue"),
+    },
+    {
+        path: "/quizzes",
+        component: () => import("../pages/quizzes.vue"),
     },
   ],
 });
