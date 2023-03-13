@@ -62,7 +62,7 @@ const signin = async () => {
         />
       </label>
       <button :aria-busy="loading">
-        {{ loading ? "Vent venligst" : "Opret konto" }}
+        {{ loading ? "Vent venligst" : "Log på" }}
       </button>
       <p>
         Har du ingen konto? <router-link to="/signup">Opret mig</router-link>
