@@ -30,4 +30,33 @@ module.exports = {
       });
     }
   },
+  api: async (req, res, next) => {
+    // Get token from request headers or request query
+    const token = req.headers.authorization || req.query.token;
+
+    if (!token) {
+      return res.json({
+        error: "Missing access token",
+      });
+    }
+
+    try {
+      // Extract token data from jwt
+      const tokenData = jwt.verify(token, process.env.JWT_API);
+
+      // Set api token data on request object
+      req.api = {
+        token: token,
+        data: tokenData,
+      };
+
+      // Next middleware
+      next();
+    } catch (error) {
+      return res.json({
+        error: "Provided access token has either expired or is invalid",
+        ...error,
+      });
+    }
+  },
 };
