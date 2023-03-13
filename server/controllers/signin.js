@@ -42,6 +42,12 @@ module.exports = async (req, res) => {
       });
     }
 
+    if (user.role == -1) {
+      return res.json({
+        error: "Account has been banned",
+      });
+    }
+
     // Delete hashed user password from user object after validation
     delete user.password;
     delete user._id;

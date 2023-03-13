@@ -5,12 +5,20 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 
 // Scaffolded user object
+/* 
+Roles 
+-1 = banned,
+0 = base
+1 = admin
+
+*/
 const USER = {
   uuid: null,
   firstName: null,
   lastName: null,
   email: null,
   password: null,
+  role: 0,
 };
 
 module.exports = async (req, res) => {
@@ -20,7 +28,7 @@ module.exports = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.json({ errors: errors.array() });
   }
-  
+
   const user = {
     // Apply base user object
     ...USER,
