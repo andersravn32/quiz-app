@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
 
     return res.json({
       message: "Successfully updated category",
-      data: categoryInsert,
+      data: categoryUpdate,
     });
   } catch (error) {
     console.log(error);
