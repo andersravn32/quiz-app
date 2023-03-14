@@ -1,9 +1,21 @@
 <script setup>
-import FormProfileEdit from '../components/FormProfileEdit.vue';
+import FormProfileEdit from "../components/FormProfileEdit.vue";
+import useAccount from "../composables/useAccount";
+import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+
+const router = useRouter();
+const account = useAccount();
+
+onMounted(() => {
+  if (router.currentRoute.value.meta.auth && !account.value) {
+    return router.push("/signin");
+  }
+});
 </script>
 
 <template>
-  <section id="page-profile" class="container">
+  <section v-if="account" id="page-profile" class="container">
     <h1>Min profil</h1>
 
     <hgroup>
