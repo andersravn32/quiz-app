@@ -9,6 +9,8 @@ const account = useAccount();
 const data = useData();
 const router = useRouter();
 
+const error = ref(null);
+
 const loading = ref(false);
 
 const remove = async () => {
@@ -85,6 +87,10 @@ const edit = async () => {
     }
   ).then((res) => res.json());
 
+  if (request.error) {
+    error.value = request.error;
+  }
+
   if (!request.data) {
     return;
   }
@@ -144,6 +150,7 @@ const edit = async () => {
         <div></div>
       </div>
     </div>
+    <p style="color: #c62828" v-if="error">* {{ error }}</p>
     <div>
       <a href="#" role="button" :aria-busy="loading" @click="edit">
         {{ loading ? "Vent venligst" : "Gem profil" }}</a
