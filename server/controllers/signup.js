@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
 
   // Handle errors from express validator
   if (!errors.isEmpty()) {
-    return res.json({ errors: errors.array() });
+    return res.json({ error: errors.array() });
   }
 
   const user = {

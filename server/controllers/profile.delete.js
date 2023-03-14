@@ -34,9 +34,18 @@ module.exports = async (req, res) => {
 
     return res.json({
       message: "Deleted profile and accompanying data",
-      queries: [profileDeletion, tokenDeletion, categoryDeletion, quizDeletion, answerDeletion],
+      queries: [
+        profileDeletion,
+        tokenDeletion,
+        categoryDeletion,
+        quizDeletion,
+        answerDeletion,
+      ],
     });
   } catch (error) {
     console.log(error);
+    return res.json({
+      error: error,
+    });
   }
 };
