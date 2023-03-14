@@ -45,8 +45,8 @@ const signin = async () => {
 </script>
 
 <template>
-  <section id="page-signin" @submit.prevent="signin">
-    <form class="container">
+  <section id="page-signin">
+    <form class="container" @submit.prevent="signin">
       <h1>Log på</h1>
       <label for="email">
         Email
