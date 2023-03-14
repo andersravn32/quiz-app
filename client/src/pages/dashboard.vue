@@ -9,15 +9,12 @@ const account = useAccount();
 const data = useData();
 
 // Update data in composable
-if (!data.quizzes.value.length || !data.categories.value.length) {
+if (!data.quizzes.value.length || !data.categories.value.length || data.requestRefresh) {
   await data.refresh();
 }
 
+// Loop over all quizzes to apply further data
 data.quizzes.value.forEach(async (quiz, index) => {
-  if (quiz.creatorFull){
-    return;
-  }
-  
   const creatorFull = await fetch(
     `http://127.0.0.1:3000/profile/${quiz.creator}`,
     {
@@ -29,6 +26,12 @@ data.quizzes.value.forEach(async (quiz, index) => {
     }
   ).then((res) => res.json());
 
+  // Generate amount of tries
+  data.quizzes.value[index].tries = data.answers.value.filter((answer) => {
+    return answer.quiz == quiz._id;
+  }).length;
+
+  // Apply full creator data
   data.quizzes.value[index].creatorFull = creatorFull.data;
 });
 
@@ -72,6 +75,7 @@ onMounted(() => {
             >
           </p>
           <p>Antal spørgsmål: {{ quiz.questions.length }}</p>
+          <p>Tidligere besvarelser: {{ quiz.tries }}</p>
         </div>
         <button @click="router.push(`/quiz/${quiz._id}`)">Start quiz</button>
         <footer>
