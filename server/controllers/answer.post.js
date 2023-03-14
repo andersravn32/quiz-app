@@ -22,17 +22,6 @@ module.exports = async (req, res) => {
     // Get database connection
     const db = database.get();
 
-    // Check database for duplicates
-    const duplicates = await db
-      .collection("answers")
-      .find({ $and: [{ creator: req.user.uuid }, { quiz: req.body.quiz }] })
-      .toArray();
-    if (duplicates.length) {
-      return res.json({
-        error: "Duplicate answer",
-      });
-    }
-
     // Ensure that quiz exists
     const quiz = await db
       .collection("quizzes")
