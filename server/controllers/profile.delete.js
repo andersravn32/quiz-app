@@ -25,14 +25,15 @@ module.exports = async (req, res) => {
     const categoryDeletion = await db
       .collection("categories")
       .deleteMany({ creator: user.uuid });
-
-    /* TODO: Add quizzes deletion query */
+    const quizDeletion = await db
+      .collection("quizzes")
+      .deleteMany({ creator: user.uuid });
 
     return res.json({
       message: "Deleted profile and accompanying data",
-      queries: [profileDeletion, tokenDeletion, categoryDeletion],
+      queries: [profileDeletion, tokenDeletion, categoryDeletion, quizDeletion],
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
