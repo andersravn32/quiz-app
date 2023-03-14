@@ -9,6 +9,8 @@ const account = useAccount();
 
 const loading = ref(false);
 
+const error = ref(null);
+
 const user = ref({
   firstName: null,
   lastName: null,
@@ -32,6 +34,10 @@ const signup = async () => {
 
   // Update loading state
   loading.value = false;
+
+  if (request.error) {
+    error.value = request.error;
+  }
 
   // If signup wasnt successful
   if (!request.accessToken) {
@@ -74,7 +80,12 @@ const signup = async () => {
       </div>
       <label for="identifier">
         Brugernavn
-        <input v-model="user.identifier" type="text" placeholder="Brugernavn" required />
+        <input
+          v-model="user.identifier"
+          type="text"
+          placeholder="Brugernavn"
+          required
+        />
       </label>
       <label for="email">
         Email
@@ -89,6 +100,7 @@ const signup = async () => {
           required
         />
       </label>
+      <p style="color: #c62828" v-if="error">* {{ error }}</p>
       <button :aria-busy="loading">
         {{ loading ? "Vent venligst" : "Opret konto" }}
       </button>

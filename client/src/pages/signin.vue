@@ -14,6 +14,8 @@ const user = ref({
   password: null,
 });
 
+const error = ref(null);
+
 const signin = async () => {
   // Update loading state
   loading.value = true;
@@ -29,6 +31,10 @@ const signin = async () => {
 
   // Update loading state
   loading.value = false;
+
+  if (request.error) {
+    error.value = request.error;
+  }
 
   // If signup wasnt successful
   if (!request.accessToken) {
@@ -61,6 +67,7 @@ const signin = async () => {
           required
         />
       </label>
+      <p style="color: #c62828" v-if="error">* {{ error }}</p>
       <button :aria-busy="loading">
         {{ loading ? "Vent venligst" : "Log på" }}
       </button>

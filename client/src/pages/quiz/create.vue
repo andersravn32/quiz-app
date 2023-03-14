@@ -16,6 +16,8 @@ onMounted(() => {
   }
 });
 
+const error = ref(null);
+
 const loading = ref(false);
 
 const quiz = ref({
@@ -51,11 +53,15 @@ const create = async () => {
   // Update loading state
   loading.value = false;
 
-  if (!request.data){
+  if (request.error) {
+    return (error.value = request.error);
+  }
+
+  if (!request.data) {
     return;
   }
 
-  return router.push("/dashboard")
+  return router.push("/dashboard");
 };
 </script>
 
@@ -136,6 +142,7 @@ const create = async () => {
               </label>
             </div>
           </div>
+          <p style="color: #c62828" v-if="error">* {{ error }}</p>
           <button
             @click.prevent="
               question.options.push({ option: null, correct: false })

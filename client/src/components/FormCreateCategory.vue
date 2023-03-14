@@ -9,6 +9,8 @@ const category = ref({
   public: true,
 });
 
+const error = ref(null);
+
 const loading = ref(false);
 
 const create = async () => {
@@ -27,6 +29,10 @@ const create = async () => {
 
   // Update loading state
   loading.value = false;
+
+  if (request.error) {
+    return (error.value = request.error);
+  }
 
   return emit("close");
 };
@@ -71,6 +77,8 @@ const create = async () => {
       <input v-model="category.public" type="checkbox" role="switch" />
       Offentliggør kategori
     </label>
+
+    <p style="color: #c62828" v-if="error">* {{ error }}</p>
     <button :aria-busy="loading">
       {{ loading ? "Vent venligst" : "Opret kategori" }}
     </button>

@@ -1,8 +1,9 @@
 <script setup>
 import FormProfileEdit from "../components/FormProfileEdit.vue";
+import FormAPIManage from "../components/FormAPIManage.vue";
 import useAccount from "../composables/useAccount";
 import { useRouter } from "vue-router";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import useData from "../composables/useData";
 
 const router = useRouter();
@@ -104,5 +105,13 @@ onMounted(async () => {
         <small>Her finder du information vedrørende dine API nøgler</small>
       </h3>
     </hgroup>
+    <FormAPIManage />
   </section>
 </template>
+
+<style>
+.key td input {
+  margin: 0;
+  font-size:.875em;
+}
+</style>
