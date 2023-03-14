@@ -3,9 +3,11 @@ import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 import Modal from "./components/Modal.vue";
 import useAccount from "./composables/useAccount";
+import useData from "./composables/useData";
 import { onMounted, ref } from "vue";
 
 const account = useAccount();
+const data = useData();
 const ready = ref(false);
 
 onMounted(async () => {
@@ -36,6 +38,10 @@ onMounted(async () => {
   localStorage.setItem("refreshToken", request.refreshToken);
   localStorage.setItem("accessToken", request.accessToken);
   account.value = request.user;
+
+  // Update quiz data in composable
+  await data.refresh();
+  
   ready.value = true;
 });
 </script>
