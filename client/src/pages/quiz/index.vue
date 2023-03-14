@@ -9,8 +9,8 @@ const account = useAccount();
 const data = useData();
 
 // Update data in composable
-if (!data.quizzes.value.length|| !data.categories.value.length){
-    await data.refresh();
+if (!data.quizzes.value.length || !data.categories.value.length) {
+  await data.refresh();
 }
 
 // Set current quiz
@@ -18,10 +18,13 @@ const quiz = data.quizzes.value.filter((quiz) => {
   return quiz._id == router.currentRoute.value.params.id;
 })[0];
 
+const loading = ref(false);
+
 // Define answer object
 const answer = ref({
   quiz: quiz._id,
   answers: [],
+  public: false,
 });
 
 // Set answer structure
@@ -48,7 +51,30 @@ const previous = () => {
 };
 
 const save = async () => {
-  console.log(answer.value);
+  // Update loading state
+  loading.value = true;
+
+  const request = await fetch("http://127.0.0.1:3000/answer", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(answer.value),
+  }).then((res) => res.json());
+
+  // Update loading state
+  loading.value = false;
+
+  if (!request.data) {
+    return;
+  }
+
+  // Request refresh of data upon next page load
+  data.requestRefresh.value = true;
+
+  // Redirect to leaderboard
+  router.push("/profile")
 };
 
 onMounted(() => {
@@ -124,7 +150,16 @@ onMounted(() => {
           <small>Gem dit resultat ved at trykke på nedenstående knap</small>
         </h3>
       </hgroup>
-      <button @click="save">Afslut quiz</button>
+      <small style="margin-bottom: 1rem">
+        <label>
+          <input v-model="answer.public" type="checkbox" role="switch" />
+          Offentliggør min besvarelse
+        </label></small
+      >
+
+      <button @click="save" :aria-busy="loading">
+        {{ loading ? "Vent venligst" : "Afslut quiz" }}
+      </button>
     </div>
   </section>
 </template>
