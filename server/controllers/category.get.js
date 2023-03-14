@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     // Get every category
     const categories = await db
       .collection("categories")
-      .find(req.user.role >= 1 ? {} : { public: false })
+      .find(req.user.role >= 1 ? {} : { public: true })
       .toArray();
 
     // Return categories to user
