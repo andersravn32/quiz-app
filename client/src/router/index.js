@@ -16,20 +16,39 @@ const router = createRouter({
       component: () => import("../pages/signup.vue"),
     },
     {
-        path: "/dashboard",
-        component: () => import("../pages/dashboard.vue"),
+      path: "/dashboard",
+      component: () => import("../pages/dashboard.vue"),
+      meta: {
+        auth: true,
+      },
     },
     {
-        path: "/leaderboard",
-        component: () => import("../pages/leaderboard.vue"),
+      path: "/leaderboard",
+      component: () => import("../pages/leaderboard.vue"),
+      meta: {
+        auth: true,
+      },
     },
     {
-        path: "/profile",
-        component: () => import("../pages/profile.vue"),
+      path: "/profile",
+      component: () => import("../pages/profile.vue"),
+      meta: {
+        auth: true,
+      },
     },
     {
-        path: "/quizzes",
-        component: () => import("../pages/quizzes.vue"),
+      path: "/quizzes",
+      component: () => import("../pages/quizzes.vue"),
+      meta: {
+        auth: true,
+      },
+    },
+    {
+      path: "/quiz/create",
+      component: () => import("../pages/quiz/create.vue"),
+      meta: {
+        auth: true,
+      },
     },
   ],
 });
