@@ -31,7 +31,7 @@ onMounted(async () => {
   if (!request.accessToken) {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("accessToken");
-    ready.value = true;
+    return ready.value = true;
   }
 
   // If refresh was successful, set localStorage, useAccount composable and ready state
@@ -41,7 +41,7 @@ onMounted(async () => {
 
   // Update quiz data in composable
   await data.refresh();
-  
+
   ready.value = true;
 });
 </script>
