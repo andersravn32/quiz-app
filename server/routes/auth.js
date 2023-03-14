@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
+const check = require("../middleware/check");
 
 // POST: /auth/signin, handles signin requests, return accessToken, refreshToken and user data
 router.post(
@@ -31,6 +32,20 @@ router.post(
   "/refresh",
   body("token").isJWT(),
   require("../controllers/refresh")
+);
+
+// Get API keys
+router.get("/api", check.auth, require("../controllers/api.get"));
+
+// Create new API key
+router.post("/api", check.auth, require("../controllers/api.post"));
+
+// Delete API key
+router.delete(
+  "/api",
+  check.auth,
+  body("token").isJWT(),
+  require("../controllers/api.delete")
 );
 
 module.exports = router;
