@@ -36,7 +36,26 @@ const categories = await fetch("http://127.0.0.1:3000/category", {
 }).then((res) => res.json());
 
 const create = async () => {
-  console.log(quiz.value);
+  // Update loading state
+  loading.value = true;
+
+  const request = await fetch("http://127.0.0.1:3000/quiz", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(quiz.value),
+  }).then((res) => res.json());
+
+  // Update loading state
+  loading.value = false;
+
+  if (!request.data){
+    return;
+  }
+
+  return router.push("/dashboard")
 };
 </script>
 
@@ -89,8 +108,17 @@ const create = async () => {
         </button>
       </div>
       <div v-if="quiz.questions.length" class="questions">
-        <article v-for="question in quiz.questions">
-          <header>{{ question.question }}</header>
+        <article v-for="(question, index) in quiz.questions" class="question">
+          <header>
+            {{ question.question }}
+            <a
+              href="#close"
+              aria-label="Close"
+              class="close"
+              @click="quiz.questions.splice(index, 1)"
+              >Slet</a
+            >
+          </header>
           <div class="options">
             <div v-for="option in question.options" class="option">
               <label for="title">
@@ -117,14 +145,18 @@ const create = async () => {
           </button>
         </article>
       </div>
-      <label v-if="quiz.title.length && quiz.category && quiz.questions.length">
+      <label
+        style="margin-bottom: 1rem"
+        v-if="quiz.title.length && quiz.category && quiz.questions.length"
+      >
         <input v-model="quiz.public" type="checkbox" role="switch" />
         Offentliggør quiz
       </label>
       <button
         v-if="quiz.title.length && quiz.category && quiz.questions.length"
+        :aria-busy="loading"
       >
-        Opret quiz
+        {{ loading ? "Vent venligst" : "Opret quiz" }}
       </button>
     </form>
   </section>
@@ -133,8 +165,13 @@ const create = async () => {
 <style>
 .questions {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
+}
+
+.question header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .option {
