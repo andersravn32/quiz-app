@@ -2,10 +2,65 @@
 import useAccount from "../composables/useAccount";
 
 import { ref } from "vue";
+import useData from "../composables/useData";
+import { useRouter } from "vue-router";
 
 const account = useAccount();
+const data = useData();
+const router = useRouter();
 
 const loading = ref(false);
+
+const remove = async () => {
+  if (!confirm("Du er ved at slette din konto, er du sikker?")) {
+    return;
+  }
+
+  const request = await fetch("http://127.0.0.1:3000/auth/signout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem("refreshToken"),
+    }),
+  }).then((res) => res.json());
+
+  if (!request.message) {
+    return;
+  }
+
+  const deleteRequest = await fetch(
+    `http://127.0.0.1:3000/profile/${account.value.identifier}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("accessToken"),
+      },
+    }
+  ).then((res) => res.json());
+
+  if (!deleteRequest.message) {
+    return;
+  }
+  console.log(deleteRequest);
+  // Reset localStorage
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+
+  // Reset account state
+  account.value = null;
+
+  // Reset data state
+  data.categories.value = [];
+  data.quizzes.value = [];
+  data.answers.value = [];
+  data.requestRefresh.value = false;
+
+  // Push to signin
+  return router.push("/signin");
+};
 
 const user = ref({
   firstName: null,
@@ -94,6 +149,10 @@ const edit = async () => {
         {{ loading ? "Vent venligst" : "Gem profil" }}</a
       >
     </div>
-    <div style="margin-top:.5rem;"><a style="color:#c62828;" href="#"><small>Slet min konto</small></a></div>
+    <div style="margin-top: 0.5rem">
+      <a style="color: #c62828" href="#" @click="remove"
+        ><small>Slet min konto</small></a
+      >
+    </div>
   </form>
 </template>
