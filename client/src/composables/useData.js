@@ -2,6 +2,8 @@ import { ref } from "vue";
 
 const quizzes = ref([]);
 const categories = ref([]);
+const answers = ref([]);
+const requestRefresh = ref(false);
 
 const refresh = async () => {
   // Update quizzes
@@ -21,8 +23,20 @@ const refresh = async () => {
       Authorization: localStorage.getItem("accessToken"),
     },
   }).then((res) => res.json());
+
+  // Update answers
+  answers.value = await fetch("http://127.0.0.1:3000/answer", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("accessToken"),
+    },
+  }).then((res) => res.json());
+
+  // Update requestRefresh
+  requestRefresh.value = false;
 };
 
 export default () => {
-  return { quizzes, categories, refresh };
+  return { quizzes, categories, answers, requestRefresh, refresh };
 };
