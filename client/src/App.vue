@@ -44,7 +44,9 @@ onMounted(async () => {
     <Navbar v-if="ready" />
     <div v-if="ready" id="content">
       <router-view v-slot="{ Component }">
-        <component :is="Component" />
+        <Suspense>
+          <component :is="Component" />
+        </Suspense>
       </router-view>
     </div>
     <Footer v-if="ready" />
