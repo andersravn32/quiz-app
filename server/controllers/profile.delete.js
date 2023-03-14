@@ -28,10 +28,13 @@ module.exports = async (req, res) => {
     const quizDeletion = await db
       .collection("quizzes")
       .deleteMany({ creator: user.uuid });
+    const answerDeletion = await db
+      .collection("answers")
+      .deleteMany({ creator: user.uuid });
 
     return res.json({
       message: "Deleted profile and accompanying data",
-      queries: [profileDeletion, tokenDeletion, categoryDeletion, quizDeletion],
+      queries: [profileDeletion, tokenDeletion, categoryDeletion, quizDeletion, answerDeletion],
     });
   } catch (error) {
     console.log(error);
