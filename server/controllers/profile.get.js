@@ -8,7 +8,12 @@ module.exports = async (req, res) => {
     // Fetch profile data from database
     const profile = await db
       .collection("users")
-      .findOne({ identifier: req.params.identifier });
+      .findOne({
+        $or: [
+          { uuid: req.params.identifier },
+          { identifier: req.params.identifier },
+        ],
+      });
 
     // Delete sensitive information
     delete profile.password;
