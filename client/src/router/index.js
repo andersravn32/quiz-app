@@ -50,6 +50,13 @@ const router = createRouter({
         auth: true,
       },
     },
+    {
+      path: "/quiz/:id",
+      component: () => import("../pages/quiz/index.vue"),
+      meta: {
+        auth: true,
+      },
+    },
   ],
 });
 
