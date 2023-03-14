@@ -11,4 +11,5 @@ router.use("/category", check.auth, require("./category"))
 // Primary profile route
 router.use("/profile", check.auth, require("./profile"));
 
+router.use("/quiz", check.auth, require("./quiz"));
 module.exports = router;
