@@ -28,5 +28,8 @@ module.exports = async (req, res) => {
     return res.json(deleteQuery);
   } catch (error) {
     console.log(error);
+    return res.json({
+      error: error,
+    });
   }
 };

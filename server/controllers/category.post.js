@@ -8,6 +8,7 @@ module.exports = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.json({ errors: errors.array() });
   }
+  
   const category = {
     title: req.body.title,
     description: req.body.description,
