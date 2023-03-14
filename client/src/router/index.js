@@ -23,22 +23,8 @@ const router = createRouter({
       },
     },
     {
-      path: "/leaderboard",
-      component: () => import("../pages/leaderboard.vue"),
-      meta: {
-        auth: true,
-      },
-    },
-    {
       path: "/profile",
       component: () => import("../pages/profile.vue"),
-      meta: {
-        auth: true,
-      },
-    },
-    {
-      path: "/quizzes",
-      component: () => import("../pages/quizzes.vue"),
       meta: {
         auth: true,
       },
