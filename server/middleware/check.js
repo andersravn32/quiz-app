@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const database = require("../utilities/database");
 
 module.exports = {
   auth: async (req, res, next) => {
@@ -60,6 +61,24 @@ module.exports = {
         token: token,
         data: tokenData,
       };
+
+      // Get database connection
+      const db = database.get();
+
+      // Ensure validity of JWT by database query
+      const tokenMatches = await db
+        .collection("tokens")
+        .find({
+          $and: [{ user: tokenData.uuid }, { token: token }, { type: "api" }],
+        })
+        .toArray();
+
+      if (!tokenMatches.length) {
+        return res.json({
+          error: "Provided access token has either expired or is invalid",
+          ...error,
+        });
+      }
 
       // Next middleware
       next();
