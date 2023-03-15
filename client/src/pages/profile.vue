@@ -55,10 +55,8 @@ onMounted(async () => {
     <hgroup>
       <h2>Statistik</h2>
       <h3>
-        <small
-          >Her kan du se generel statistik vedrørende de forskellige quizzes du
-          har gennemført</small
-        >
+        <small>Her kan du se generel statistik vedrørende de forskellige quizzes du
+          har gennemført</small>
       </h3>
     </hgroup>
     <table v-if="data.answers.value.length" role="grid">
@@ -82,16 +80,26 @@ onMounted(async () => {
             }}
           </td>
           <td>
-            {{
-              data.categories.value.filter((category) => {
-                return (
-                  category._id ==
-                  data.quizzes.value.filter((quiz) => {
-                    return quiz._id == answer.quiz;
-                  })[0].category
-                );
-              })[0].title
-            }}
+
+            <span :data-tooltip="data.categories.value.filter((category) => {
+              return (
+                category._id ==
+                data.quizzes.value.filter((quiz) => {
+                  return quiz._id == answer.quiz;
+                })[0].category
+              );
+            })[0].description">
+              {{
+                data.categories.value.filter((category) => {
+                  return (
+                    category._id ==
+                    data.quizzes.value.filter((quiz) => {
+                      return quiz._id == answer.quiz;
+                    })[0].category
+                  );
+                })[0].title
+              }}
+            </span>
           </td>
           <td>{{ new Date(answer.created).toISOString().split("T")[0] }}</td>
           <td>{{ answer.correctPerc }} %</td>
@@ -112,6 +120,6 @@ onMounted(async () => {
 <style>
 .key td input {
   margin: 0;
-  font-size:.875em;
+  font-size: .875em;
 }
 </style>
